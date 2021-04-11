@@ -11,66 +11,44 @@ buildscript {
         }
         jcenter()
     }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
-    }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
+plugins {
+    id "com.github.johnrengelman.shadow" version "6.0.0"
+}
+
 apply plugin: 'idea'
+apply plugin: 'java'
 
-ext.mainClassName = "bspkrs.mmv.gui.MappingGui"
+sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.options.encoding = 'UTF-8'
 
-// Setting up java version stuff
-
-def javaVersion = '1.7'
-
-[compileJava, compileTestJava].each { cJava ->
-    cJava.sourceCompatibility = cJava.targetCompatibility = javaVersion
+tasks.jar {
+    manifest.attributes(
+            "Main-Class": "bspkrs.mmv.gui.MappingGui"
+    )
+    enabled = false
+    dependsOn shadowJar
 }
-eclipse.jdt {
-    sourceCompatibility = targetCompatibility = javaVersion
-}
-idea.project.languageLevel = javaVersion
-
-// End java version stuff
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.4'
-}
-
-[compileJava, compileTestJava].each { cJava ->
-    cJava.options.compilerArgs += ['-Xlint:unchecked']
-    cJava.options.encoding = 'UTF-8'
-    cJava.options.incremental = true
-    cJava.options.fork = true
+	implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 processResources {
     from 'LICENSE'
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
-build.dependsOn(shadowJar)
-
-shadowJar {
-    dependencies {
-        include dependency('com.google.code.gson:gson')
+jar {
+    manifest {
+        attributes(
+                'Implementation-Title': 'MCPMappingViewer',
+                'Implementation-Version': archiveVersion,
+                'Main-Class': 'bspkrs.mmv.gui.MappingGui'
+        )
     }
-}
-
-jar.manifest {
-    attributes 'Main-Class': mainClassName
-}
-
-task run(type: JavaExec) {
-  classpath = sourceSets.main.runtimeClasspath
-
-  main = mainClassName
 }
