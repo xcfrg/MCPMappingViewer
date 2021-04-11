@@ -1,20 +1,12 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            name "central snapshots"
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-        maven {
-            name "gradle plugins"
-            url "https://plugins.gradle.org/m2/"
-        }
         jcenter()
     }
 }
 
 plugins {
-    id "com.github.johnrengelman.shadow" version "6.0.0"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 apply plugin: 'idea'
