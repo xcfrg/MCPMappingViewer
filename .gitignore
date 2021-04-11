@@ -9,16 +9,13 @@
 .recommenders/
 bin/
 
-# (no) idea
-.idea
+# idea
+.idea/
 *.iml
 *.ipr
 *.iws
 out/
 
 # gradle
-/.gradle/
-/build/
-!/gradle/wrapper/gradle-wrapper.jar
-
-dist
+.gradle/
+build/
