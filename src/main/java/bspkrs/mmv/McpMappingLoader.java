@@ -16,24 +16,18 @@
  */
 package bspkrs.mmv;
 
+import bspkrs.mmv.McpBotCommand.MemberType;
+import bspkrs.mmv.gui.MappingGui;
 import immibis.bon.IProgressListener;
 
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import java.io.File;
 import java.io.IOException;
 import java.security.DigestException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
-
-import bspkrs.mmv.McpBotCommand.MemberType;
-import bspkrs.mmv.gui.MappingGui;
 
 public class McpMappingLoader
 {
@@ -82,7 +76,12 @@ public class McpMappingLoader
         if (tokens.length < 3)
             throw new CantLoadMCPMappingException("Invalid mapping string specified.");
 
-        boolean isNew = tokens[0].compareTo("1.13") >= 0;
+        System.out.println(tokens[0].compareTo("1.13"));
+        System.out.println(!tokens[0].contains("1.9") && !tokens[0].contains("1.8") && !tokens[0].contains("1.7"));
+        boolean isNew = tokens[0].compareTo("1.13") > 0;
+        if (tokens[0].contains("1.9") || tokens[0].contains("1.8") || tokens[0].contains("1.7")) {
+            isNew = false;
+        }
         String baseSrgUrl = isNew ? newBaseSrgUrl : oldBaseSrgUrl;
         String srgFileName = isNew ? "config/joined.tsrg" : "joined.srg";
         String excFileName = isNew ? "config/exceptions.txt" : "joined.exc";
